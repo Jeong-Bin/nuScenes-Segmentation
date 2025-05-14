@@ -33,12 +33,12 @@ def get_new_target(target):
     
 
     # 새로운 bboxes를 저장할 텐서 초기화
-    new_bboxes = torch.zeros((3, 4), dtype=torch.float, device=device)
+    # new_bboxes = torch.zeros((3, 4), dtype=torch.float, device=device)
 
     # 각 카테고리에 대한 마스크 생성
-    vehicle_mask = torch.tensor([label in vehicle_labels for label in target['labels']], device=device)
-    road_mask = torch.tensor([label in road_labels for label in target['labels']], device=device)
-    pedestrian_mask = torch.tensor([label in pedestrian_labels for label in target['labels']], device=device)
+    # vehicle_mask = torch.tensor([label in vehicle_labels for label in target['labels']], device=device)
+    # road_mask = torch.tensor([label in road_labels for label in target['labels']], device=device)
+    # pedestrian_mask = torch.tensor([label in pedestrian_labels for label in target['labels']], device=device)
 
     # # Helper function: Merge bounding boxes by computing the union
     # def merge_bboxes(bboxes):

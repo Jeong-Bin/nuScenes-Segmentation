@@ -5,22 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 
-# def tensor_visualizer(tsr):
-#     if type(tsr) == np.ndarray:
-#         tsr = torch.tensor(tsr)
-        
-#     tensor_PIL = transforms.ToPILImage()
-#     image = tensor_PIL(tsr)
-#     plt.imshow(image)
-#     plt.show()
-
-
-# def label_to_color(label_map):
-#     # (H, W) -> (H, W, 3) RGB
-#     color_map = np.zeros((*label_map.shape, 3), dtype=np.uint8)
-#     color_map[label_map == 0] = [0, 0, 255]    # 클래스 0 -> 파란색
-#     color_map[label_map == 1] = [255, 0, 0]    # 클래스 1 -> 빨간색
-#     return color_map
 def label_to_color(args, maps):
     """
     multi_label : [C, H, W]
