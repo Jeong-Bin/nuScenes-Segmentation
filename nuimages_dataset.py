@@ -91,7 +91,12 @@ class NuImagesDataset(torch.utils.data.Dataset):
         image = Image.open(image_path).convert('RGB')
         
         # segmentation mask 생성 (이미지 크기와 동일하게)
+        #if len(self.args.targets) == 1:
         mask = np.zeros((image.size[1], image.size[0]), dtype=np.int32) 
+        # else:
+        #     mask = np.full((image.size[1], image.size[0]), 
+        #                     len(self.args.targets),  # background의 label(=class 개수-1+1)로 초기화 # 클래스가 3개라면 0~2은 유효 클래스, 3은 background
+        #                     dtype=np.int32)
         
         if self.has_object_ann:
             # object annotations 처리

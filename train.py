@@ -111,12 +111,20 @@ def main(args):
     # processor = SegformerImageProcessor.from_pretrained(model_name)
     # model = SegformerForSemanticSegmentation.from_pretrained(model_name)
 
+    #if len(args.targets) == 1:
     model = Mask2FormerForUniversalSegmentation.from_pretrained(
         args.model_name,
         num_labels=len(args.targets)+1, 
         ignore_mismatched_sizes=True
     )
-
+    # else:
+    #     class_weights = torch.tensor([
+    #         1.0,             # background (0) - 가중치를 0으로 설정
+    #         args.w_veh,      # vehicle (1)
+    #         args.w_dri,      # driveable (2)
+    #         args.w_ped,      # pedestrian (3)
+    #     ])
+        
     #     model = Mask2FormerFocal.from_pretrained(
     #         args.model_name,
     #         num_labels=len(args.targets)+1, 
@@ -192,6 +200,15 @@ def main(args):
     else: 
         train_transforms = None
         val_transforms = None
+      
+
+    
+
+    # if len(args.targets) != 1:
+    #     model.config.ignore_value = len(args.targets)+1 # background의 label(=class 개수-1+1)은 무시.
+    # else:
+    #     model.config.ignore_value = 0
+
 
 
     train_nuimages = NuImages(dataroot=args.dataroot, version="v1.0-train", verbose=True, lazy=False)
@@ -251,6 +268,7 @@ def main(args):
 
         # Model
         model = model.cuda()
+        #class_weights = class_weights.cuda()
 
         # Dataset
         train_dataset = NuImagesDataset(args, train_nuimages, processor=processor, transforms=train_transforms, remove_empty=args.remove_empty, mode='train', rank=rank, logger=logger)
@@ -274,6 +292,13 @@ def main(args):
             collate_fn=collate_fn
         )
 
+
+    # model = apply_focal_loss(
+    #     model,
+    #     class_weights,
+    #     alpha=0.5,  # 클래스 불균형 조정
+    #     gamma=2.0   # 잘못 분류된 샘플에 대한 가중치
+    # )
 
 
     len_train_dataset = len(train_dataset)
